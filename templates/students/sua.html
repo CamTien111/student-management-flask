@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Sửa sinh viên{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h4 class="fw-bold mb-0"><i class="bi bi-pencil-square"></i> Chỉnh sửa Sinh viên</h4>
+  <a href="{{ url_for('students.index') }}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left"></i> Quay lại
+  </a>
+</div>
+<div class="card p-4" style="max-width:600px;">
+  <form method="POST">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">MSSV</label>
+        <input type="text" class="form-control" value="{{ sv.ma_sv }}" disabled>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Họ và Tên <span class="text-danger">*</span></label>
+        <input type="text" name="ho_ten" class="form-control" value="{{ sv.ho_ten }}" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Email</label>
+        <input type="email" name="email" class="form-control" value="{{ sv.email or '' }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Giới tính</label>
+        <select name="gioi_tinh" class="form-select">
+          <option value="Nam" {% if sv.gioi_tinh == 'Nam' %}selected{% endif %}>Nam</option>
+          <option value="Nữ" {% if sv.gioi_tinh == 'Nữ' %}selected{% endif %}>Nữ</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Lớp <span class="text-danger">*</span></label>
+        <input type="text" name="class_name" class="form-control" value="{{ sv.lop.ten_lop }}" required>
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-warning px-4">
+          <i class="bi bi-check-circle"></i> Cập nhật
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

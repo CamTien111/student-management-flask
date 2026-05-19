@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Thêm sinh viên{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h4 class="fw-bold mb-0"><i class="bi bi-person-plus"></i> THÊM SINH VIÊN MỚI
+  <a href="{{ url_for('students.index') }}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left"></i> Quay lại
+  </a>
+</div>
+<div class="card p-4" style="max-width:600px;">
+  <form method="POST">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">MSSV <span class="text-danger">*</span></label>
+        <input type="text" name="ma_sv" class="form-control" required placeholder="VD: SV001">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Họ và Tên <span class="text-danger">*</span></label>
+        <input type="text" name="ho_ten" class="form-control" required placeholder="Nguyễn Văn A">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Email</label>
+        <input type="email" name="email" class="form-control" placeholder="sv@email.com">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Giới tính</label>
+        <select name="gioi_tinh" class="form-select">
+          <option value="Nam">Nam</option>
+          <option value="Nữ">Nữ</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Lớp <span class="text-danger">*</span></label>
+        <input type="text" name="class_name" class="form-control" placeholder="Ví dụ: 21T1" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Mật khẩu đăng nhập</label>
+        <input type="text" name="password" class="form-control" value="123456" placeholder="Mặc định: 123456">
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary px-4">
+          <i class="bi bi-check-circle"></i> Thêm sinh viên
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

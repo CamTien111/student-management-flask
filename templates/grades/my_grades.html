@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}Điểm của tôi{% endblock %}
+{% block content %}
+<h4 class="fw-bold mb-4"><i class="bi bi-card-list"></i> Điểm của tôi - {{ sv.ho_ten }}</h4>
+
+{% if du_bao %}
+<div class="alert alert-info mb-4">
+  <h6 class="fw-bold"><i class="bi bi-lightbulb"></i> Dự báo kết quả</h6>
+  <p class="mb-1">GPA hiện tại: <strong>{{ du_bao.gpa_hien_tai }}</strong></p>
+  <p class="mb-1">Để đạt GPA <strong>{{ du_bao.target_gpa }}</strong>, bạn cần đạt
+    <strong class="text-danger">{{ du_bao.diem_can_dat_he4 }}</strong> (thang 4)
+    ở {{ du_bao.so_mon_con_lai }} môn còn lại.
+  </p>
+</div>
+{% endif %}
+
+{% if gpa_data %}
+<div class="card p-3 mb-4">
+  <h6 class="fw-bold mb-3"><i class="bi bi-graph-up"></i> GPA theo học kỳ</h6>
+  <canvas id="gpaChart" height="100"></canvas>
+</div>
+{% endif %}
+
+{% for hoc_ky, diems in diem_theo_hky.items() %}
+<div class="card mb-3">
+  <div class="card-header fw-bold bg-primary text-white">
+    <i class="bi bi-calendar3"></i> {{ hoc_ky }}
+    {% if hoc_ky in gpa_data %}
+    <span class="badge bg-warning text-dark float-end">GPA: {{ gpa_data[hoc_ky] }}</span>
+    {% endif %}
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Môn học</th><th>Tín chỉ</th><th>ĐCC</th>
+          <th>ĐGK</th><th>ĐCK</th><th>Tổng kết</th><th>Xếp loại</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for bd in diems %}
+        <tr>
+          <td class="fw-semibold">{{ bd.mon.ten_mon }}</td>
+          <td>{{ bd.mon.so_tin_chi }}</td>
+          <td>{{ bd.diem_cc or '-' }}</td>
+          <td>{{ bd.diem_giua_ky or '-' }}</td>
+          <td>{{ bd.diem_cuoi_ky or '-' }}</td>
+          <td class="fw-bold">{{ bd.diem_tong_ket or '-' }}</td>
+          <td>
+            {% if bd.xep_loai == 'Xuất sắc' %}<span class="badge bg-primary">{{ bd.xep_loai }}</span>
+            {% elif bd.xep_loai == 'Giỏi' %}<span class="badge bg-success">{{ bd.xep_loai }}</span>
+            {% elif bd.xep_loai == 'Khá' %}<span class="badge bg-info">{{ bd.xep_loai }}</span>
+            {% elif bd.xep_loai == 'Không đạt' %}<span class="badge bg-danger">{{ bd.xep_loai }}</span>
+            {% else %}<span class="badge bg-warning text-dark">{{ bd.xep_loai }}</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="alert alert-warning">Chưa có dữ liệu điểm nào.</div>
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+{% if gpa_data %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+new Chart(document.getElementById('gpaChart'), {
+  type: 'line',
+  data: {
+    labels: {{ gpa_data.keys()|list|tojson }},
+    datasets: [{
+      label: 'GPA',
+      data: {{ gpa_data.values()|list|tojson }},
+      borderColor: '#1a237e',
+      backgroundColor: 'rgba(26,35,126,0.1)',
+      tension: 0.4, fill: true, pointRadius: 6
+    }]
+  },
+  options: { scales: { y: { min: 0, max: 4 } } }
+});
+</script>
+{% endif %}
+{% endblock %}

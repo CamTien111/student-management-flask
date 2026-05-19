@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}Nhập điểm{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h4 class="fw-bold mb-0"><i class="bi bi-pencil-square"></i> NHẬP ĐIỂM SINH VIÊN</h4>
+  <a href="{{ url_for('grades.index') }}" class="btn btn-outline-secondary">
+    ← Quay lại
+  </a>
+</div>
+<div class="card p-4" style="max-width:700px;">
+  <form method="POST">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Sinh viên <span class="text-danger">*</span></label>
+        <select name="sv_id" class="form-select" required>
+          <option value="">Chọn sinh viên...</option>
+          {% for sv in sinh_viens %}
+          <option value="{{ sv.id }}">{{ sv.ma_sv }} - {{ sv.ho_ten }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Môn học <span class="text-danger">*</span></label>
+        <select name="mon_id" class="form-select" required>
+          <option value="">Chọn môn học...</option>
+          {% for mon in mon_hocs %}
+          <option value="{{ mon.id }}">{{ mon.ten_mon }} ({{ mon.so_tin_chi }} TC)</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Học kỳ <span class="text-danger">*</span></label>
+        <select name="hoc_ky" class="form-select" required>
+          <option value="HK1_2024">HK1 2024-2025</option>
+          <option value="HK2_2024">HK2 2024-2025</option>
+          <option value="HK1_2025">HK1 2025-2026</option>
+          <option value="HK2_2025">HK2 2025-2026</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Điểm chuyên cần (20%)</label>
+        <input type="number" name="diem_cc" class="form-control" min="0" max="10" step="0.1" placeholder="0-10">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Điểm giữa kỳ (20%)</label>
+        <input type="number" name="diem_giua_ky" class="form-control" min="0" max="10" step="0.1" placeholder="0-10">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Điểm cuối kỳ (60%)</label>
+        <input type="number" name="diem_cuoi_ky" class="form-control" min="0" max="10" step="0.1" placeholder="0-10">
+      </div>
+      <div class="col-12">
+        <div class="alert alert-info py-2">
+          <small><i class="bi bi-info-circle"></i> Tổng kết = CC×20% + GK×20% + CK×60%</small>
+        </div>
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary px-4">
+          <i class="bi bi-check-circle"></i> Lưu điểm
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}
